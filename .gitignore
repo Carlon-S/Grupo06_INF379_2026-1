@@ -1,0 +1,12 @@
+# Ignorar el entorno virtual
+.venv/
+env/
+venv/
+
+# Cache de Python
+__pycache__/
+*.py[cod]
+
+# Archivos temporales de Windows/Office
+~$*
+.DS_Store
