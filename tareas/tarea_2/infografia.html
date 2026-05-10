@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Infografía Movilidad Urbana Santiago 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f2f0eb;
+  --dark: #1a1c1e;
+  --metro: #d32f2f;
+  --metro2: #e53935;
+  --gold: #e8a020;
+  --teal: #00838f;
+  --sand: #e8dcc8;
+  --white: #ffffff;
+  --ink: #1a1c1e;
+  --muted: #6b6860;
+}
+
+body {
+  background: var(--bg);
+  font-family: 'Outfit', sans-serif;
+  width: 1100px;
+  margin: 0 auto;
+  color: var(--ink);
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--dark);
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  min-height: 220px;
+  overflow: hidden;
+  position: relative;
+}
+.hero-left {
+  padding: 48px 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+.hero-eyebrow {
+  font-family: 'Outfit', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 72px;
+  line-height: 0.92;
+  color: var(--white);
+  letter-spacing: 0.02em;
+  margin-bottom: 16px;
+}
+.hero h1 em {
+  color: var(--metro2);
+  font-style: normal;
+}
+.hero-desc {
+  font-size: 13.5px;
+  color: rgba(255,255,255,0.55);
+  font-weight: 300;
+  line-height: 1.6;
+  max-width: 420px;
+}
+.hero-right {
+  background: var(--metro);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 36px;
+  gap: 24px;
+  position: relative;
+}
+.hero-right::before {
+  content: '';
+  position: absolute;
+  left: -30px; top: 0; bottom: 0;
+  width: 60px;
+  background: var(--metro);
+  clip-path: polygon(30px 0, 100% 0, 100% 100%, 30px 100%, 0 50%);
+}
+.kpi-row {
+  display: flex;
+  gap: 24px;
+  position: relative;
+  z-index: 1;
+}
+.kpi {
+  text-align: center;
+}
+.kpi-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px;
+  color: var(--white);
+  line-height: 1;
+}
+.kpi-unit {
+  font-size: 22px;
+  color: rgba(255,255,255,0.7);
+}
+.kpi-label {
+  font-size: 11px;
+  color: rgba(255,255,255,0.65);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+.kpi-divider {
+  width: 1px;
+  background: rgba(255,255,255,0.2);
+  align-self: stretch;
+}
+
+/* ── TOPIC STRIP ── */
+.topic-strip {
+  background: var(--gold);
+  display: flex;
+  align-items: center;
+  padding: 12px 52px;
+  gap: 8px;
+}
+.topic-strip span {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  color: var(--dark);
+}
+.topic-dot {
+  width: 5px; height: 5px;
+  background: var(--dark);
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+/* ── MAIN GRID ── */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 0;
+  background: var(--dark);
+}
+
+.cell {
+  background: var(--bg);
+  overflow: hidden;
+  position: relative;
+  border: 3px solid var(--dark);
+}
+
+.cell-label {
+  position: absolute;
+  top: 16px; left: 16px;
+  background: var(--dark);
+  color: var(--white);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  padding: 4px 12px;
+  z-index: 10;
+  border-radius: 2px;
+}
+
+.cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  background: #fff;
+}
+
+/* Cell sizing */
+.cell-waffle { grid-column: 1; grid-row: 1; height: 420px; }
+.cell-radial { grid-column: 2; grid-row: 1; height: 420px; }
+.cell-chord  { grid-column: 1; grid-row: 2; height: 440px; }
+.cell-slope  { grid-column: 2; grid-row: 2; height: 440px; }
+
+/* ── NIGHTINGALE FULL WIDTH ── */
+.night-section {
+  background: var(--dark);
+  padding: 0;
+  border-top: 6px solid var(--gold);
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 460px;
+}
+.night-sidebar {
+  background: var(--metro);
+  padding: 48px 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+.night-sidebar-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 38px;
+  color: var(--white);
+  line-height: 1.05;
+  letter-spacing: 0.03em;
+}
+.night-sidebar-sub {
+  font-size: 12.5px;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.65;
+  font-weight: 300;
+}
+.night-tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  color: var(--white);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 2px;
+  align-self: flex-start;
+  font-weight: 600;
+}
+.night-img-wrap {
+  background: #fafaf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 20px;
+}
+.night-img-wrap img {
+  max-height: 420px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* ── INSIGHTS ROW ── */
+.insights-row {
+  background: var(--sand);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-top: 3px solid var(--dark);
+}
+.insight-block {
+  padding: 28px 28px;
+  border-right: 1px solid rgba(26,28,30,0.12);
+  position: relative;
+}
+.insight-block:last-child { border-right: none; }
+.insight-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 44px;
+  color: var(--metro);
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.insight-text {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.insight-text strong { color: var(--ink); font-weight: 600; }
+.insight-bar {
+  position: absolute;
+  top: 0; left: 0;
+  height: 3px;
+  background: var(--metro);
+}
+
+/* ── FOOTER ── */
+.footer {
+  background: var(--dark);
+  padding: 18px 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-authors {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.06em;
+}
+.footer-authors strong {
+  color: rgba(255,255,255,0.7);
+  font-weight: 500;
+}
+.footer-year {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  color: var(--gold);
+  letter-spacing: 0.1em;
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Encuesta de Movilidad Urbana · N = 35</div>
+    <h1>¿Cómo se<br>mueve <em>Santiago</em>?</h1>
+    <div class="hero-desc">Análisis del comportamiento de usuarios del transporte público en Santiago, basado en encuesta propia realizada en abril–mayo 2026.</div>
+  </div>
+  <div class="hero-right">
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-num">51<span class="kpi-unit">%</span></div>
+        <div class="kpi-label">Estudiantes<br>universitarios</div>
+      </div>
+      <div class="kpi-divider"></div>
+      <div class="kpi">
+        <div class="kpi-num">54<span class="kpi-unit">%</span></div>
+        <div class="kpi-label">Usa Metro<br>+ RED</div>
+      </div>
+      <div class="kpi-divider"></div>
+      <div class="kpi">
+        <div class="kpi-num">35</div>
+        <div class="kpi-label">Respuestas<br>encuesta</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOPIC STRIP -->
+<div class="topic-strip">
+  <span>PERFIL TARIFARIO</span>
+  <div class="topic-dot"></div>
+  <span>HORARIOS DE USO</span>
+  <div class="topic-dot"></div>
+  <span>SISTEMA VS MOTIVO</span>
+  <div class="topic-dot"></div>
+  <span>MOTIVOS RELATIVOS</span>
+  <div class="topic-dot"></div>
+  <span>DISTRIBUCIÓN HORARIA</span>
+</div>
+
+<!-- MAIN 4-VIZ GRID -->
+<div class="main-grid">
+  <!-- PERFIL TARIFARIO - Waffle Chart -->
+  <div class="cell cell-waffle">
+    <img src="individual/joshua_serin/Waffle Chart.png" alt="Perfil Tarifario - Waffle Chart">
+  </div>
+  
+  <!-- HORARIOS DE USO - Radial Bar Chart -->
+  <div class="cell cell-radial">
+    <img src="individual/joshua_serin/Radial Bart Chart.png" alt="Horarios de Uso - Radial Bar Chart">
+  </div>
+  
+  <!-- SISTEMA VS MOTIVO - Chord Diagram -->
+  <div class="cell cell-chord">
+    <img src="individual/diego_carlon/Chord Diagram.png" alt="Sistema vs Motivo - Chord Diagram">
+  </div>
+  
+  <!-- MOTIVOS RELATIVOS - Slope Chart -->
+  <div class="cell cell-slope">
+    <img src="individual/diego_carlon/Slope Chart.png" alt="Motivos Relativos - Slope Chart">
+  </div>
+</div>
+
+<!-- NIGHTINGALE - DISTRIBUCIÓN HORARIA -->
+<div class="night-section">
+  <div class="night-sidebar">
+    <div class="night-sidebar-title">Distribución<br>Horaria</div>
+    <div class="night-sidebar-sub">Visualización grupal que muestra la distribución de viajes por bloque horario, diferenciando por día laboral y fin de semana.</div>
+    <div class="night-tag">VISUALIZACIÓN GRUPAL</div>
+  </div>
+  <div class="night-img-wrap">
+    <img src="grupal/NightingaleRose_Grupal_Tarea2.png" alt="Distribución Horaria - Nightingale Rose">
+  </div>
+</div>
+
+<!-- INSIGHTS ROW -->
+<div class="insights-row">
+  <div class="insight-block">
+    <div class="insight-bar" style="width:80%"></div>
+    <div class="insight-num">63%</div>
+    <div class="insight-text">de usuarios que usan <strong>ambos sistemas</strong> viajan por motivo de <strong>Estudio</strong></div>
+  </div>
+  <div class="insight-block">
+    <div class="insight-bar" style="width:60%"></div>
+    <div class="insight-num">40</div>
+    <div class="insight-text">menciones en <strong>Punta Tarde</strong> (18-20h), el horario más activo de la red</div>
+  </div>
+  <div class="insight-block">
+    <div class="insight-bar" style="width:55%"></div>
+    <div class="insight-num">54%</div>
+    <div class="insight-text">de encuestados usa <strong>Metro + RED</strong> combinados en su movilidad diaria</div>
+  </div>
+  <div class="insight-block">
+    <div class="insight-bar" style="width:40%"></div>
+    <div class="insight-num">12</div>
+    <div class="insight-text">menciones en <strong>Noche</strong> (20h+), el horario de menor actividad registrada</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-authors">
+    <strong>Diego Carlon</strong> · <strong>Joshua Serin</strong>
+  </div>
+  <div class="footer-year">SANTIAGO 2026</div>
+</div>
+
+</body>
+</html>
