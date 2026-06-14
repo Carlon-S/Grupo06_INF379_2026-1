@@ -1,0 +1,156 @@
+import pandas as pd
+
+# Cargar el CSV generado
+df = pd.read_csv("metro_estaciones.csv", encoding="utf-8-sig")
+
+# Diccionario con la comuna de cada estación
+# Basado en la información oficial del Metro de Santiago
+comunas = {
+    "Alcántara": "Las Condes",
+    "Baquedano": "Providencia",
+    "Barrancas": "Pudahuel",
+    "Bellas Artes": "Santiago",
+    "Bellavista de La Florida": "La Florida",
+    "Blanqueado": "Quinta Normal",
+    "Bío Bío": "Santiago",
+    "Camino Agrícola": "San Joaquín",
+    "Cardenal Caro": "Conchalí",
+    "Carlos Valdovinos": "San Joaquín",
+    "Cementerios": "Recoleta",
+    "Cerrillos": "Cerrillos",
+    "Cerro Blanco": "Recoleta",
+    "Chile España": "Ñuñoa",
+    "Ciudad del Niño": "San Miguel",
+    "Conchalí": "Conchalí",
+    "Copa Lo Martinez": "El Bosque",
+    "Cristobal Colón": "Providencia",
+    "Cumming": "Santiago",
+    "Del Sol": "Maipú",
+    "Departamental": "San Miguel",
+    "Dorsal": "Recoleta",
+    "Ecuador": "Estación Central",
+    "Einstein": "Recoleta",
+    "El Bosque": "El Bosque",
+    "El Golf": "Las Condes",
+    "El Llano": "San Miguel",
+    "El Parrón": "La Cisterna",
+    "Elisa Correa": "Puente Alto",
+    "Escuela Militar": "Las Condes",
+    "Estación Central": "Estación Central",
+    "Estadio Nacional": "Ñuñoa",
+    "Fernando Castillo Velasco": "La Reina",
+    "Ferrocarril": "Quilicura",
+    "Francisco Bilbao": "Providencia",
+    "Franklin": "Santiago",
+    "Grecia": "Peñalolén",
+    "Gruta de Lourdes": "Quinta Normal",
+    "Hernando de Magallanes": "Las Condes",
+    "Hospital El Pino": "San Bernardo",
+    "Hospital Sótero del Río": "Puente Alto",
+    "Hospitales": "Independencia",
+    "Inés de Suárez": "Providencia",
+    "Irarrázaval": "Ñuñoa",
+    "La Cisterna": "La Cisterna",
+    "La Granja": "La Granja",
+    "La Moneda": "Santiago",
+    "Laguna Sur": "Pudahuel",
+    "Las Mercedes": "Puente Alto",
+    "Las Parcelas": "Maipú",
+    "Las Rejas": "Lo Prado",
+    "Las Torres": "Peñalolén",
+    "Lo Cruzat": "Quilicura",
+    "Lo Ovalle": "La Cisterna",
+    "Lo Prado": "Lo Prado",
+    "Lo Valledor": "Pedro Aguirre Cerda",
+    "Lo Vial": "San Miguel",
+    "Los Dominicos": "Las Condes",
+    "Los Héroes": "Santiago",
+    "Los Leones": "Providencia",
+    "Los Libertadores": "Quilicura",
+    "Los Orientales": "Peñalolén",
+    "Los Presidentes": "Peñalolén",
+    "Los Quillayes": "La Florida",
+    "Macul": "La Florida",
+    "Manquehue": "Las Condes",
+    "Manuel Montt": "Providencia",
+    "Matta": "Santiago",
+    "Mirador": "La Florida",
+    "Monseñor Eyzaguirre": "Ñuñoa",
+    "Monte Tabor": "Maipú",
+    "Neptuno": "Lo Prado",
+    "Observatorio": "El Bosque",
+    "Pajaritos": "Lo Prado",
+    "Parque Almagro": "Santiago",
+    "Parque Bustamante": "Providencia",
+    "Parque O'Higgins": "Santiago",
+    "Patronato": "Recoleta",
+    "Pdte. Pedro Aguirre Cerda": "Pedro Aguirre Cerda",
+    "Pedrero": "San Joaquín",
+    "Pedro de Valdivia": "Providencia",
+    "Plaza Chacabuco": "Independencia",
+    "Plaza Egaña": "Ñuñoa",
+    "Plaza Quilicura": "Quilicura",
+    "Plaza de Armas": "Santiago",
+    "Plaza de Maipú": "Maipú",
+    "Plaza de Puente Alto": "Puente Alto",
+    "Protectora de La Infancia": "Puente Alto",
+    "Príncipe de Gales": "La Reina",
+    "Pudahuel": "Pudahuel",
+    "Puente Cal y Canto": "Santiago",
+    "Quilín": "Peñalolén",
+    "Quinta Normal": "Santiago",
+    "República": "Santiago",
+    "Rodrigo de Araya": "San Joaquín",
+    "Rojas Magallanes": "La Florida",
+    "Rondizzoni": "Santiago",
+    "Salvador": "Providencia",
+    "San Alberto Hurtado": "Estación Central",
+    "San Joaquín": "San Joaquín",
+    "San José de La Estrella": "La Florida",
+    "San Miguel": "San Miguel",
+    "San Pablo": "Lo Prado",
+    "San Ramón": "San Ramón",
+    "Santa Ana": "Santiago",
+    "Santa Isabel": "Providencia",
+    "Santa Julia": "La Florida",
+    "Santa Lucía": "Santiago",
+    "Santa Rosa": "San Ramón",
+    "Santiago Bueras": "Maipú",
+    "Simón Bolivar": "La Reina",
+    "Tobalaba": "Providencia",
+    "Toesca": "Santiago",
+    "Trinidad": "La Florida",
+    "Universidad Católica": "Santiago",
+    "Universidad de Chile": "Santiago",
+    "Universidad de Santiago": "Estación Central",
+    "Unión Latinoamericana": "Santiago",
+    "Vespucio Norte": "Recoleta",
+    "Vicente Valdés": "La Florida",
+    "Vicuña Mackenna": "La Florida",
+    "Villa Frei": "Ñuñoa",
+    "Vivaceta": "Conchalí",
+    "Zapadores": "Recoleta",
+    "Ñuble": "Ñuñoa",
+    "Ñuñoa": "Ñuñoa",
+}
+
+# Agregar la columna Comuna
+df["Comuna"] = df["Estacion"].map(comunas)
+
+# Verificar si hay estaciones sin comuna asignada
+faltantes = df[df["Comuna"].isna()]
+if len(faltantes) > 0:
+    print("⚠️  Estaciones sin comuna asignada:")
+    print(faltantes[["Estacion"]].to_string(index=False))
+else:
+    print("✅ Todas las estaciones tienen comuna asignada.")
+
+# Reordenar columnas para que Comuna quede después de Estacion
+columnas = ["Estacion", "Comuna", "Lineas", "Latitud", "Longitud", "Combinacion"]
+df = df[columnas]
+
+# Guardar el nuevo CSV
+df.to_csv("metro_estaciones_con_comuna.csv", index=False, encoding="utf-8-sig")
+
+print(f"\nArchivo generado: metro_estaciones_con_comuna.csv")
+print(f"Total de estaciones: {len(df)}")

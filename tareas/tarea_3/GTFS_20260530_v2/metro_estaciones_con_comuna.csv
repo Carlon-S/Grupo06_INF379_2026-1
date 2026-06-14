@@ -1,0 +1,127 @@
+﻿Estacion,Comuna,Lineas,Latitud,Longitud,Combinacion
+Alcántara,Las Condes,L1,-33.415419000018,-70.5896634998623,No
+Baquedano,Providencia,"L1, L5",-33.43750553096004,-70.63411422303083,Sí
+Barrancas,Pudahuel,L5,-33.4527,-70.739578,No
+Bellas Artes,Santiago,L5,-33.436437,-70.644239,No
+Bellavista de La Florida,La Florida,L5,-33.51967375048541,-70.5998685008082,No
+Blanqueado,Quinta Normal,L5,-33.441131,-70.706884,No
+Bío Bío,Santiago,L6,-33.47666,-70.64236,No
+Camino Agrícola,San Joaquín,L5,-33.491921,-70.617491,No
+Cardenal Caro,Conchalí,L3,-33.373314,-70.686283,No
+Carlos Valdovinos,San Joaquín,L5,-33.486573,-70.619021,No
+Cementerios,Recoleta,L2,-33.413869,-70.643831,No
+Cerrillos,Cerrillos,L6,-33.483438,-70.694744,No
+Cerro Blanco,Recoleta,L2,-33.422701000054,-70.6452344996378,No
+Chile España,Ñuñoa,L3,-33.455206,-70.597489,No
+Ciudad del Niño,San Miguel,L2,-33.5096130002021,-70.6566629998577,No
+Conchalí,Conchalí,L3,-33.397531,-70.669564,No
+Copa Lo Martinez,El Bosque,L2,-33.57088,-70.67366,No
+Cristobal Colón,Providencia,L4,-33.4262390000614,-70.5913565005398,No
+Cumming,Santiago,L5,-33.439081,-70.668727,No
+Del Sol,Maipú,L5,-33.489988,-70.753539,No
+Departamental,San Miguel,L2,-33.5025035001789,-70.6546435001872,No
+Dorsal,Recoleta,L2,-33.396749,-70.642995,No
+Ecuador,Estación Central,L1,-33.4558520000734,-70.6997090002258,No
+Einstein,Recoleta,L2,-33.405617,-70.64351,No
+El Bosque,El Bosque,L2,-33.54642,-70.66699,No
+El Golf,Las Condes,L1,-33.4166810001873,-70.5961859995077,No
+El Llano,San Miguel,L2,-33.4825920005116,-70.6494913339987,No
+El Parrón,La Cisterna,L2,-33.5264300003383,-70.6613919999116,No
+Elisa Correa,Puente Alto,L4,-33.568978,-70.583827,No
+Escuela Militar,Las Condes,L1,-33.4137962513945,-70.5834134986974,No
+Estación Central,Estación Central,L1,-33.4510403336808,-70.6790756671766,No
+Estadio Nacional,Ñuñoa,L6,-33.4626335000084,-70.6069290000594,No
+Fernando Castillo Velasco,La Reina,L3,-33.452321,-70.558179,No
+Ferrocarril,Quilicura,L3,-33.36515,-70.70593,No
+Francisco Bilbao,Providencia,L4,-33.4316600000293,-70.5849245003265,No
+Franklin,Santiago,"L2, L6",-33.47646374103211,-70.64941008242597,Sí
+Grecia,Peñalolén,L4,-33.4695980040618,-70.5760219974342,No
+Gruta de Lourdes,Quinta Normal,L5,-33.438271,-70.690941,No
+Hernando de Magallanes,Las Condes,L1,-33.408201,-70.556103,No
+Hospital El Pino,San Bernardo,L2,-33.5826850000564,-70.6767600006371,No
+Hospital Sótero del Río,Puente Alto,L4,-33.5767460005552,-70.5823165005658,No
+Hospitales,Independencia,L3,-33.417829,-70.656054,No
+Inés de Suárez,Providencia,L6,-33.43841,-70.606742,No
+Irarrázaval,Ñuñoa,"L3, L5",-33.45404880064935,-70.62849495714286,Sí
+La Cisterna,La Cisterna,"L2, L4A",-33.53800487895712,-70.6643520985358,Sí
+La Granja,La Granja,L4A,-33.541150500016,-70.6160410001947,No
+La Moneda,Santiago,L1,-33.444869201097,-70.6551847995323,No
+Laguna Sur,Pudahuel,L5,-33.4623845,-70.738134,No
+Las Mercedes,Puente Alto,L4,-33.6014065003725,-70.5774894994835,No
+Las Parcelas,Maipú,L5,-33.475021,-70.740398,No
+Las Rejas,Lo Prado,L1,-33.4575140001779,-70.7065992501643,No
+Las Torres,Peñalolén,L4,-33.4994285004767,-70.5866750005799,No
+Lo Cruzat,Quilicura,L3,-33.3664432120537,-70.720480519152,No
+Lo Ovalle,La Cisterna,L2,-33.5172895002066,-70.6588529999999,No
+Lo Prado,Lo Prado,L5,-33.443204498535444,-70.71686449853544,No
+Lo Valledor,Pedro Aguirre Cerda,L6,-33.477694,-70.680962,No
+Lo Vial,San Miguel,L2,-33.496842000108,-70.6529965002026,No
+Los Dominicos,Las Condes,L1,-33.4079660003098,-70.5451156663444,No
+Los Héroes,Santiago,"L1, L2",-33.44621221588554,-70.66061653418869,Sí
+Los Leones,Providencia,"L1, L6",-33.42169511622118,-70.60852254752102,Sí
+Los Libertadores,Quilicura,L3,-33.365575,-70.690667,No
+Los Orientales,Peñalolén,L4,-33.4624280002695,-70.5738685008655,No
+Los Presidentes,Peñalolén,L4,-33.4796120004368,-70.578619000311,No
+Los Quillayes,La Florida,L4,-33.560877,-70.585288,No
+Macul,La Florida,L4,-33.5093810000803,-70.5900709992973,No
+Manquehue,Las Condes,L1,-33.4092271697542,-70.5689079980065,No
+Manuel Montt,Providencia,L1,-33.4286535001209,-70.6196305002969,No
+Matta,Santiago,L3,-33.457966,-70.642977,No
+Mirador,La Florida,L5,-33.513087,-70.606208,No
+Monseñor Eyzaguirre,Ñuñoa,L3,-33.453375,-70.613785,No
+Monte Tabor,Maipú,L5,-33.48209049970743,-70.74582299941487,No
+Neptuno,Lo Prado,L1,-33.4514660000993,-70.7226654999901,No
+Observatorio,El Bosque,L2,-33.56039,-70.6703,No
+Pajaritos,Lo Prado,L1,-33.4573606674556,-70.7156393335818,No
+Parque Almagro,Santiago,L3,-33.451431,-70.650662,No
+Parque Bustamante,Providencia,L5,-33.442826,-70.632085,No
+Parque O'Higgins,Santiago,L2,-33.460700500022,-70.6568764999963,No
+Patronato,Recoleta,L2,-33.4294940004763,-70.6471859996248,No
+Pdte. Pedro Aguirre Cerda,Pedro Aguirre Cerda,L6,-33.478477,-70.664988,No
+Pedrero,San Joaquín,L5,-33.508054,-70.612344,No
+Pedro de Valdivia,Providencia,L1,-33.4252307504914,-70.613821000677,No
+Plaza Chacabuco,Independencia,L3,-33.406435,-70.660871,No
+Plaza Egaña,Ñuñoa,"L3, L4",-33.45342979644313,-70.57098180285428,Sí
+Plaza Quilicura,Quilicura,L3,-33.3656937072977,-70.7293896612974,No
+Plaza de Armas,Santiago,"L3, L5",-33.4373774989077,-70.65146690162523,Sí
+Plaza de Maipú,Maipú,L5,-33.509923333399,-70.7568933332511,No
+Plaza de Puente Alto,Puente Alto,L4,-33.6094197507587,-70.5756327506493,No
+Protectora de La Infancia,Puente Alto,L4,-33.5892805001949,-70.57967700003485,No
+Príncipe de Gales,La Reina,L4,-33.4389173336975,-70.573009999793,No
+Pudahuel,Pudahuel,L5,-33.4447005,-70.7409765,No
+Puente Cal y Canto,Santiago,"L2, L3",-33.432693807176555,-70.6525897541307,Sí
+Quilín,Peñalolén,L4,-33.4882755038026,-70.5802475026891,No
+Quinta Normal,Santiago,L5,-33.4403945000005,-70.6804460000066,No
+República,Santiago,L1,-33.4477040003231,-70.6667376670974,No
+Rodrigo de Araya,San Joaquín,L5,-33.478073,-70.622192,No
+Rojas Magallanes,La Florida,L4,-33.535751,-70.592853,No
+Rondizzoni,Santiago,L2,-33.470183,-70.656325,No
+Salvador,Providencia,L1,-33.4328226000889,-70.6259352003323,No
+San Alberto Hurtado,Estación Central,L1,-33.4542110000313,-70.6922765002798,No
+San Joaquín,San Joaquín,L5,-33.49883299999999,-70.615762,No
+San José de La Estrella,La Florida,L4,-33.553463,-70.586562,No
+San Miguel,San Miguel,L2,-33.4887287505838,-70.6511055003364,No
+San Pablo,Lo Prado,"L1, L5",-33.444757341221,-70.72316183878513,Sí
+San Ramón,San Ramón,L4A,-33.5412560000362,-70.643032499722,No
+Santa Ana,Santiago,"L2, L5",-33.43829383027457,-70.6599067486857,Sí
+Santa Isabel,Providencia,L5,-33.446967,-70.630519,No
+Santa Julia,La Florida,L4A,-33.5311045003382,-70.6055380006224,No
+Santa Lucía,Santiago,L1,-33.4426015001015,-70.6450135004098,No
+Santa Rosa,San Ramón,L4A,-33.5424160003251,-70.6341105001584,No
+Santiago Bueras,Maipú,L5,-33.496779,-70.757302,No
+Simón Bolivar,La Reina,L4,-33.4461070002363,-70.571867499432,No
+Tobalaba,Providencia,"L1, L4",-33.41850013269349,-70.60215774185677,Sí
+Toesca,Santiago,L2,-33.4529735000973,-70.6585815009479,No
+Trinidad,La Florida,L4,-33.546932,-70.587818,No
+Universidad Católica,Santiago,L1,-33.4398775005508,-70.6399685003287,No
+Universidad de Chile,Santiago,"L1, L3",-33.443878474915444,-70.65074579793824,Sí
+Universidad de Santiago,Estación Central,L1,-33.4527110000353,-70.6861880000361,No
+Unión Latinoamericana,Santiago,L1,-33.4493046667187,-70.6733970000011,No
+Vespucio Norte,Recoleta,L2,-33.380832501078,-70.6466290008906,No
+Vicente Valdés,La Florida,"L4, L5",-33.5261436135363,-70.59687895595265,Sí
+Vicuña Mackenna,La Florida,"L4, L4A",-33.52003683068625,-70.5964124938815,Sí
+Villa Frei,Ñuñoa,L3,-33.454816,-70.580146,No
+Vivaceta,Conchalí,L3,-33.385377,-70.679303,No
+Zapadores,Recoleta,L2,-33.391309000003,-70.6425814999764,No
+Ñuble,Ñuñoa,"L5, L6",-33.46724910293102,-70.6249142575578,Sí
+Ñuñoa,Ñuñoa,"L3, L6",-33.45423193879549,-70.60509250883514,Sí
