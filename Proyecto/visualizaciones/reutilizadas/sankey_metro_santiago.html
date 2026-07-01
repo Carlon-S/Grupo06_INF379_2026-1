@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sankey Metro Santiago 2010-2025</title>
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #ffffff;
+    color: #222222;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    padding: 18px 24px 28px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .header-label {
+    font-size: 13px;
+    color: #888;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  #yr-slider {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: #cccccc;
+    outline: none;
+    cursor: pointer;
+  }
+  #yr-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #cccccc;
+    cursor: pointer;
+    border: 2px solid #555;
+  }
+  #yr-slider::-moz-range-thumb {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #cccccc;
+    cursor: pointer;
+    border: 2px solid #555;
+  }
+  .year-badge {
+    font-size: 22px;
+    font-weight: 700;
+    color: #222222;
+    min-width: 58px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .btn-anim {
+    background: #f4f4f4;
+    color: #333333;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+    padding: 6px 18px;
+    font-size: 13px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .btn-anim:hover { background: #e6e6e6; }
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .stat-card {
+    background: #f4f4f4;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+  .stat-label {
+    font-size: 10px;
+    color: #666;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .stat-val {
+    font-size: 22px;
+    font-weight: 700;
+    color: #222222;
+    line-height: 1.15;
+  }
+  .stat-val.small { font-size: 14px; }
+  #sankey-plot { width: 100%; margin: 0 auto; }
+  .legend-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #dddddd;
+  }
+  .leg-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #555555;
+  }
+  .leg-dot {
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .footnote {
+    font-size: 11px;
+    color: #555;
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <span class="header-label">Año</span>
+  <input type="range" id="yr-slider" min="2010" max="2025" value="2025" step="1">
+  <span class="year-badge" id="yr-badge">2025</span>
+  <button class="btn-anim" id="btn-play">&#9654; Animar</button>
+</div>
+
+<div class="stats-row">
+  <div class="stat-card">
+    <div class="stat-label">Total Pasajeros</div>
+    <div class="stat-val" id="stat-total">—</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Líneas Activas</div>
+    <div class="stat-val" id="stat-lines">—</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Líderes</div>
+    <div class="stat-val small" id="stat-leaders">—</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Tipo Tarifa</div>
+    <div class="stat-val small" id="stat-fares">Disponible</div>
+  </div>
+</div>
+
+<div id="sankey-plot"></div>
+
+<div class="legend-wrap">
+  <span class="leg-item"><span class="leg-dot" style="background:#C13B3B"></span>Línea 1</span><span class="leg-item"><span class="leg-dot" style="background:#D4863A"></span>Línea 2</span><span class="leg-item"><span class="leg-dot" style="background:#7A5C2E"></span>Línea 3</span><span class="leg-item"><span class="leg-dot" style="background:#3A5FA0"></span>Línea 4</span><span class="leg-item"><span class="leg-dot" style="background:#6A8BC4"></span>Línea 4A</span><span class="leg-item"><span class="leg-dot" style="background:#2E8B57"></span>Línea 5</span><span class="leg-item"><span class="leg-dot" style="background:#7B3FA0"></span>Línea 6</span>
+  <span style="border-left:1px solid #cccccc;margin:0 6px;"></span>
+  <span class="leg-item"><span class="leg-dot" style="background:#378ADD"></span>Adulto</span><span class="leg-item"><span class="leg-dot" style="background:#1D9E75"></span>Estud. media/sup.</span><span class="leg-item"><span class="leg-dot" style="background:#BA7517"></span>Estud. básica</span><span class="leg-item"><span class="leg-dot" style="background:#D4537E"></span>Adulto Mayor</span>
+</div>
+
+<div class="footnote">
+  Fuente: Metro S.A. &mdash; Tabla A18 (afluencia por línea) y Tabla A19 (transacciones por tipo de tarifa).
+  El grosor de cada flujo es proporcional a los pasajeros. Los tipos de pago sólo están disponibles desde 2010.
+</div>
+
+<script>
+const DATA = {"2010": {"total": 620.7, "n_lines": 5, "leaders": "Línea 1, Línea 2", "node_labels": ["2010", "Línea 1", "Línea 2", "Línea 4", "Línea 5", "Línea 4A", "Adulto", "Estud. media/sup.", "Estud. básica"], "node_colors": ["#555550", "#C13B3B", "#D4863A", "#3A5FA0", "#2E8B57", "#6A8BC4", "#378ADD", "#1D9E75", "#BA7517"], "node_customdata": ["", "259.5M (41.8%)", "122.3M (19.7%)", "115.7M (18.6%)", "104.2M (16.8%)", "19.0M (3.1%)", "448.0M (72.7%)", "158.3M (25.7%)", "10.1M (1.6%)"], "sources": [0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5], "targets": [1, 2, 3, 4, 5, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8], "values": [259.5, 122.302, 115.667, 104.22, 19.028, 188.607, 66.651, 4.242, 88.89, 31.413, 1.999, 84.068, 29.708, 1.891, 75.748, 26.768, 1.704, 13.83, 4.887, 0.311], "link_colors": ["rgba(193,59,59,0.5)", "rgba(212,134,58,0.5)", "rgba(58,95,160,0.5)", "rgba(46,139,87,0.5)", "rgba(106,139,196,0.5)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)"]}, "2011": {"total": 639.9, "n_lines": 5, "leaders": "Línea 1, Línea 5", "node_labels": ["2011", "Línea 1", "Línea 5", "Línea 2", "Línea 4", "Línea 4A", "Adulto", "Estud. media/sup.", "Estud. básica"], "node_colors": ["#555550", "#C13B3B", "#2E8B57", "#D4863A", "#3A5FA0", "#6A8BC4", "#378ADD", "#1D9E75", "#BA7517"], "node_customdata": ["", "252.7M (39.5%)", "133.2M (20.8%)", "120.2M (18.8%)", "115.6M (18.1%)", "18.3M (2.9%)", "452.7M (70.8%)", "174.9M (27.4%)", "11.8M (1.8%)"], "sources": [0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5], "targets": [1, 2, 3, 4, 5, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8], "values": [252.687, 133.16, 120.241, 115.598, 18.254, 178.922, 69.115, 4.65, 94.288, 36.422, 2.45, 85.14, 32.888, 2.212, 81.853, 31.618, 2.127, 12.925, 4.993, 0.336], "link_colors": ["rgba(193,59,59,0.5)", "rgba(46,139,87,0.5)", "rgba(212,134,58,0.5)", "rgba(58,95,160,0.5)", "rgba(106,139,196,0.5)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)"]}, "2012": {"total": 648.7, "n_lines": 5, "leaders": "Línea 1, Línea 5", "node_labels": ["2012", "Línea 1", "Línea 5", "Línea 2", "Línea 4", "Línea 4A", "Adulto", "Estud. media/sup.", "Estud. básica"], "node_colors": ["#555550", "#C13B3B", "#2E8B57", "#D4863A", "#3A5FA0", "#6A8BC4", "#378ADD", "#1D9E75", "#BA7517"], "node_customdata": ["", "257.5M (39.7%)", "136.4M (21.0%)", "118.7M (18.3%)", "117.2M (18.1%)", "18.9M (2.9%)", "454.8M (70.1%)", "181.1M (27.9%)", "12.9M (2.0%)"], "sources": [0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5], "targets": [1, 2, 3, 4, 5, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8], "values": [257.51, 136.442, 118.65, 117.201, 18.932, 180.49, 71.895, 5.125, 95.633, 38.094, 2.716, 83.162, 33.126, 2.361, 82.147, 32.722, 2.333, 13.27, 5.286, 0.377], "link_colors": ["rgba(193,59,59,0.5)", "rgba(46,139,87,0.5)", "rgba(212,134,58,0.5)", "rgba(58,95,160,0.5)", "rgba(106,139,196,0.5)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)"]}, "2013": {"total": 666.9, "n_lines": 5, "leaders": "Línea 1, Línea 5", "node_labels": ["2013", "Línea 1", "Línea 5", "Línea 2", "Línea 4", "Línea 4A", "Adulto", "Estud. media/sup.", "Estud. básica"], "node_colors": ["#555550", "#C13B3B", "#2E8B57", "#D4863A", "#3A5FA0", "#6A8BC4", "#378ADD", "#1D9E75", "#BA7517"], "node_customdata": ["", "263.6M (39.5%)", "141.7M (21.2%)", "121.9M (18.3%)", "120.1M (18.0%)", "19.6M (2.9%)", "466.3M (69.8%)", "187.5M (28.1%)", "13.9M (2.1%)"], "sources": [0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5], "targets": [1, 2, 3, 4, 5, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8], "values": [263.633, 141.654, 121.853, 120.105, 19.631, 184.116, 74.034, 5.482, 98.928, 39.78, 2.946, 85.1, 34.219, 2.534, 83.879, 33.728, 2.498, 13.71, 5.513, 0.408], "link_colors": ["rgba(193,59,59,0.5)", "rgba(46,139,87,0.5)", "rgba(212,134,58,0.5)", "rgba(58,95,160,0.5)", "rgba(106,139,196,0.5)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)"]}, "2014": {"total": 667.6, "n_lines": 5, "leaders": "Línea 1, Línea 5", "node_labels": ["2014", "Línea 1", "Línea 5", "Línea 2", "Línea 4", "Línea 4A", "Adulto", "Estud. media/sup.", "Estud. básica"], "node_colors": ["#555550", "#C13B3B", "#2E8B57", "#D4863A", "#3A5FA0", "#6A8BC4", "#378ADD", "#1D9E75", "#BA7517"], "node_customdata": ["", "262.0M (39.2%)", "144.1M (21.6%)", "121.9M (18.3%)", "119.4M (17.9%)", "20.3M (3.0%)", "466.8M (69.8%)", "187.7M (28.1%)", "14.3M (2.1%)"], "sources": [0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5], "targets": [1, 2, 3, 4, 5, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8], "values": [261.952, 144.081, 121.909, 119.417, 20.289, 182.836, 73.517, 5.599, 100.565, 40.437, 3.08, 85.089, 34.214, 2.606, 83.35, 33.515, 2.552, 14.161, 5.694, 0.434], "link_colors": ["rgba(193,59,59,0.5)", "rgba(46,139,87,0.5)", "rgba(212,134,58,0.5)", "rgba(58,95,160,0.5)", "rgba(106,139,196,0.5)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)"]}, "2015": {"total": 661.2, "n_lines": 5, "leaders": "Línea 1, Línea 5", "node_labels": ["2015", "Línea 1", "Línea 5", "Línea 4", "Línea 2", "Línea 4A", "Adulto", "Estud. media/sup.", "Estud. básica"], "node_colors": ["#555550", "#C13B3B", "#2E8B57", "#3A5FA0", "#D4863A", "#6A8BC4", "#378ADD", "#1D9E75", "#BA7517"], "node_customdata": ["", "257.4M (38.9%)", "144.6M (21.9%)", "119.8M (18.1%)", "118.8M (18.0%)", "20.6M (3.1%)", "460.3M (69.5%)", "189.3M (28.6%)", "12.2M (1.8%)"], "sources": [0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5], "targets": [1, 2, 3, 4, 5, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8], "values": [257.416, 144.575, 119.792, 118.762, 20.627, 179.026, 73.647, 4.744, 100.548, 41.363, 2.664, 83.312, 34.273, 2.207, 82.596, 33.978, 2.188, 14.345, 5.901, 0.38], "link_colors": ["rgba(193,59,59,0.5)", "rgba(46,139,87,0.5)", "rgba(58,95,160,0.5)", "rgba(212,134,58,0.5)", "rgba(106,139,196,0.5)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)"]}, "2016": {"total": 670.1, "n_lines": 5, "leaders": "Línea 1, Línea 5", "node_labels": ["2016", "Línea 1", "Línea 5", "Línea 2", "Línea 4", "Línea 4A", "Adulto", "Estud. media/sup.", "Estud. básica"], "node_colors": ["#555550", "#C13B3B", "#2E8B57", "#D4863A", "#3A5FA0", "#6A8BC4", "#378ADD", "#1D9E75", "#BA7517"], "node_customdata": ["", "261.0M (38.9%)", "146.9M (21.9%)", "121.1M (18.1%)", "120.2M (17.9%)", "20.8M (3.1%)", "466.4M (69.4%)", "192.8M (28.7%)", "12.7M (1.9%)"], "sources": [0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5], "targets": [1, 2, 3, 4, 5, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8], "values": [260.993, 146.938, 121.102, 120.236, 20.803, 181.168, 74.905, 4.919, 101.997, 42.171, 2.77, 84.063, 34.756, 2.283, 83.462, 34.508, 2.266, 14.44, 5.97, 0.392], "link_colors": ["rgba(193,59,59,0.5)", "rgba(46,139,87,0.5)", "rgba(212,134,58,0.5)", "rgba(58,95,160,0.5)", "rgba(106,139,196,0.5)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)"]}, "2017": {"total": 685.1, "n_lines": 6, "leaders": "Línea 1, Línea 5", "node_labels": ["2017", "Línea 1", "Línea 5", "Línea 2", "Línea 4", "Línea 4A", "Línea 6", "Adulto", "Estud. media/sup.", "Estud. básica"], "node_colors": ["#555550", "#C13B3B", "#2E8B57", "#D4863A", "#3A5FA0", "#6A8BC4", "#7B3FA0", "#378ADD", "#1D9E75", "#BA7517"], "node_customdata": ["", "270.6M (39.5%)", "146.8M (21.4%)", "123.0M (18.0%)", "118.8M (17.3%)", "20.4M (3.0%)", "5.5M (0.8%)", "483.0M (70.4%)", "188.3M (27.4%)", "14.8M (2.2%)"], "sources": [0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6], "targets": [1, 2, 3, 4, 5, 6, 7, 8, 9, 7, 8, 9, 7, 8, 9, 7, 8, 9, 7, 8, 9, 7, 8, 9], "values": [270.647, 146.761, 122.971, 118.825, 20.399, 5.461, 190.511, 74.284, 5.853, 103.306, 40.281, 3.174, 86.56, 33.752, 2.659, 83.642, 32.614, 2.57, 14.359, 5.599, 0.441, 3.844, 1.499, 0.118], "link_colors": ["rgba(193,59,59,0.5)", "rgba(46,139,87,0.5)", "rgba(212,134,58,0.5)", "rgba(58,95,160,0.5)", "rgba(106,139,196,0.5)", "rgba(123,63,160,0.5)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)"]}, "2018": {"total": 721.0, "n_lines": 6, "leaders": "Línea 1, Línea 5", "node_labels": ["2018", "Línea 1", "Línea 5", "Línea 2", "Línea 4", "Línea 6", "Línea 4A", "Adulto", "Estud. media/sup.", "Estud. básica"], "node_colors": ["#555550", "#C13B3B", "#2E8B57", "#D4863A", "#3A5FA0", "#7B3FA0", "#6A8BC4", "#378ADD", "#1D9E75", "#BA7517"], "node_customdata": ["", "278.1M (38.6%)", "143.7M (19.9%)", "121.2M (16.8%)", "118.9M (16.5%)", "39.1M (5.4%)", "20.0M (2.8%)", "517.9M (71.9%)", "183.7M (25.5%)", "18.6M (2.6%)"], "sources": [0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6], "targets": [1, 2, 3, 4, 5, 6, 7, 8, 9, 7, 8, 9, 7, 8, 9, 7, 8, 9, 7, 8, 9, 7, 8, 9], "values": [278.072, 143.668, 121.25, 118.935, 39.112, 19.969, 199.97, 70.935, 7.167, 103.316, 36.649, 3.703, 87.194, 30.93, 3.125, 85.53, 30.34, 3.066, 28.127, 9.977, 1.008, 14.36, 5.094, 0.515], "link_colors": ["rgba(193,59,59,0.5)", "rgba(46,139,87,0.5)", "rgba(212,134,58,0.5)", "rgba(58,95,160,0.5)", "rgba(123,63,160,0.5)", "rgba(106,139,196,0.5)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)"]}, "2019": {"total": 703.7, "n_lines": 7, "leaders": "Línea 1, Línea 5", "node_labels": ["2019", "Línea 1", "Línea 5", "Línea 2", "Línea 4", "Línea 3", "Línea 6", "Línea 4A", "Adulto", "Estud. media/sup.", "Estud. básica"], "node_colors": ["#555550", "#C13B3B", "#2E8B57", "#D4863A", "#3A5FA0", "#7A5C2E", "#7B3FA0", "#6A8BC4", "#378ADD", "#1D9E75", "#BA7517"], "node_customdata": ["", "262.7M (37.3%)", "123.1M (17.5%)", "102.9M (14.6%)", "101.9M (14.5%)", "55.8M (7.9%)", "40.7M (5.8%)", "16.5M (2.3%)", "502.4M (71.4%)", "178.9M (25.4%)", "22.4M (3.2%)"], "sources": [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7], "targets": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 8, 9, 10, 8, 9, 10, 8, 9, 10, 8, 9, 10, 8, 9, 10, 8, 9, 10], "values": [262.687, 123.1, 102.893, 101.894, 55.821, 40.742, 16.536, 187.534, 66.79, 8.363, 87.882, 31.299, 3.919, 73.456, 26.161, 3.276, 72.743, 25.907, 3.244, 39.851, 14.193, 1.777, 29.086, 10.359, 1.297, 11.805, 4.204, 0.526], "link_colors": ["rgba(193,59,59,0.5)", "rgba(46,139,87,0.5)", "rgba(212,134,58,0.5)", "rgba(58,95,160,0.5)", "rgba(122,92,46,0.5)", "rgba(123,63,160,0.5)", "rgba(106,139,196,0.5)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)"]}, "2020": {"total": 263.4, "n_lines": 7, "leaders": "Línea 1, Línea 2", "node_labels": ["2020", "Línea 1", "Línea 2", "Línea 5", "Línea 4", "Línea 3", "Línea 6", "Línea 4A", "Adulto", "Estud. media/sup.", "Estud. básica", "Adulto Mayor"], "node_colors": ["#555550", "#C13B3B", "#D4863A", "#2E8B57", "#3A5FA0", "#7A5C2E", "#7B3FA0", "#6A8BC4", "#378ADD", "#1D9E75", "#BA7517", "#D4537E"], "node_customdata": ["", "93.2M (35.4%)", "43.2M (16.4%)", "39.4M (15.0%)", "37.8M (14.4%)", "27.3M (10.4%)", "16.4M (6.2%)", "5.9M (2.3%)", "199.9M (75.9%)", "41.1M (15.6%)", "11.0M (4.2%)", "11.3M (4.3%)"], "sources": [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7], "targets": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11], "values": [93.241, 43.18, 39.424, 37.797, 27.339, 16.433, 5.944, 70.778, 14.56, 3.904, 3.999, 32.778, 6.743, 1.808, 1.852, 29.926, 6.156, 1.651, 1.691, 28.691, 5.902, 1.582, 1.621, 20.753, 4.269, 1.145, 1.173, 12.474, 2.566, 0.688, 0.705, 4.512, 0.928, 0.249, 0.255], "link_colors": ["rgba(193,59,59,0.5)", "rgba(212,134,58,0.5)", "rgba(46,139,87,0.5)", "rgba(58,95,160,0.5)", "rgba(122,92,46,0.5)", "rgba(123,63,160,0.5)", "rgba(106,139,196,0.5)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)"]}, "2021": {"total": 359.4, "n_lines": 7, "leaders": "Línea 1, Línea 5", "node_labels": ["2021", "Línea 1", "Línea 5", "Línea 2", "Línea 4", "Línea 3", "Línea 6", "Línea 4A", "Adulto", "Estud. media/sup.", "Estud. básica", "Adulto Mayor"], "node_colors": ["#555550", "#C13B3B", "#2E8B57", "#D4863A", "#3A5FA0", "#7A5C2E", "#7B3FA0", "#6A8BC4", "#378ADD", "#1D9E75", "#BA7517", "#D4537E"], "node_customdata": ["", "118.4M (33.0%)", "64.9M (18.1%)", "54.3M (15.1%)", "53.6M (14.9%)", "36.9M (10.3%)", "21.7M (6.0%)", "9.5M (2.6%)", "281.0M (78.2%)", "46.0M (12.8%)", "11.8M (3.3%)", "20.5M (5.7%)"], "sources": [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7], "targets": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11], "values": [118.42, 64.891, 54.334, 53.574, 36.914, 21.72, 9.515, 92.607, 15.153, 3.905, 6.756, 50.746, 8.303, 2.14, 3.702, 42.49, 6.953, 1.792, 3.1, 41.896, 6.855, 1.767, 3.056, 28.867, 4.723, 1.217, 2.106, 16.985, 2.779, 0.716, 1.239, 7.441, 1.218, 0.314, 0.543], "link_colors": ["rgba(193,59,59,0.5)", "rgba(46,139,87,0.5)", "rgba(212,134,58,0.5)", "rgba(58,95,160,0.5)", "rgba(122,92,46,0.5)", "rgba(123,63,160,0.5)", "rgba(106,139,196,0.5)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)"]}, "2022": {"total": 544.4, "n_lines": 7, "leaders": "Línea 1, Línea 5", "node_labels": ["2022", "Línea 1", "Línea 5", "Línea 4", "Línea 2", "Línea 3", "Línea 6", "Línea 4A", "Adulto", "Estud. media/sup.", "Estud. básica", "Adulto Mayor"], "node_colors": ["#555550", "#C13B3B", "#2E8B57", "#3A5FA0", "#D4863A", "#7A5C2E", "#7B3FA0", "#6A8BC4", "#378ADD", "#1D9E75", "#BA7517", "#D4537E"], "node_customdata": ["", "186.7M (34.3%)", "98.0M (18.0%)", "78.8M (14.5%)", "77.4M (14.2%)", "56.1M (10.3%)", "33.9M (6.2%)", "13.5M (2.5%)", "354.9M (68.4%)", "106.5M (20.5%)", "21.5M (4.1%)", "35.7M (6.9%)"], "sources": [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7], "targets": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11], "values": [186.706, 97.981, 78.776, 77.399, 56.138, 33.904, 13.509, 127.771, 38.35, 7.73, 12.855, 67.053, 20.126, 4.056, 6.746, 53.91, 16.181, 3.261, 5.424, 52.968, 15.898, 3.204, 5.329, 38.418, 11.531, 2.324, 3.865, 23.202, 6.964, 1.404, 2.334, 9.245, 2.775, 0.559, 0.93], "link_colors": ["rgba(193,59,59,0.5)", "rgba(46,139,87,0.5)", "rgba(58,95,160,0.5)", "rgba(212,134,58,0.5)", "rgba(122,92,46,0.5)", "rgba(123,63,160,0.5)", "rgba(106,139,196,0.5)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)"]}, "2023": {"total": 599.1, "n_lines": 7, "leaders": "Línea 1, Línea 5", "node_labels": ["2023", "Línea 1", "Línea 5", "Línea 4", "Línea 2", "Línea 3", "Línea 6", "Línea 4A", "Adulto", "Estud. media/sup.", "Estud. básica", "Adulto Mayor"], "node_colors": ["#555550", "#C13B3B", "#2E8B57", "#3A5FA0", "#D4863A", "#7A5C2E", "#7B3FA0", "#6A8BC4", "#378ADD", "#1D9E75", "#BA7517", "#D4537E"], "node_customdata": ["", "206.7M (34.5%)", "104.3M (17.4%)", "87.1M (14.5%)", "84.7M (14.1%)", "63.0M (10.5%)", "38.2M (6.4%)", "14.9M (2.5%)", "403.6M (67.4%)", "120.5M (20.1%)", "26.7M (4.4%)", "48.3M (8.1%)"], "sources": [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7], "targets": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11], "values": [206.73, 104.34, 87.13, 84.74, 63.04, 38.21, 14.9, 139.283, 41.58, 9.198, 16.669, 70.298, 20.986, 4.642, 8.413, 58.703, 17.525, 3.877, 7.026, 57.093, 17.044, 3.77, 6.833, 42.473, 12.68, 2.805, 5.083, 25.744, 7.685, 1.7, 3.081, 10.039, 2.997, 0.663, 1.201], "link_colors": ["rgba(193,59,59,0.5)", "rgba(46,139,87,0.5)", "rgba(58,95,160,0.5)", "rgba(212,134,58,0.5)", "rgba(122,92,46,0.5)", "rgba(123,63,160,0.5)", "rgba(106,139,196,0.5)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)"]}, "2024": {"total": 640.1, "n_lines": 7, "leaders": "Línea 1, Línea 5", "node_labels": ["2024", "Línea 1", "Línea 5", "Línea 2", "Línea 4", "Línea 3", "Línea 6", "Línea 4A", "Adulto", "Estud. media/sup.", "Estud. básica", "Adulto Mayor"], "node_colors": ["#555550", "#C13B3B", "#2E8B57", "#D4863A", "#3A5FA0", "#7A5C2E", "#7B3FA0", "#6A8BC4", "#378ADD", "#1D9E75", "#BA7517", "#D4537E"], "node_customdata": ["", "217.3M (34.0%)", "108.3M (16.9%)", "96.1M (15.0%)", "92.5M (14.5%)", "74.2M (11.6%)", "37.4M (5.9%)", "14.1M (2.2%)", "422.7M (66.0%)", "128.5M (20.1%)", "30.9M (4.8%)", "58.0M (9.1%)"], "sources": [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7], "targets": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11], "values": [217.332, 108.325, 96.135, 92.491, 74.25, 37.445, 14.077, 143.525, 43.617, 10.489, 19.701, 71.537, 21.74, 5.228, 9.819, 63.487, 19.294, 4.64, 8.714, 61.081, 18.562, 4.464, 8.384, 49.034, 14.901, 3.584, 6.731, 24.729, 7.515, 1.807, 3.394, 9.296, 2.825, 0.679, 1.276], "link_colors": ["rgba(193,59,59,0.5)", "rgba(46,139,87,0.5)", "rgba(212,134,58,0.5)", "rgba(58,95,160,0.5)", "rgba(122,92,46,0.5)", "rgba(123,63,160,0.5)", "rgba(106,139,196,0.5)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)"]}, "2025": {"total": 548.1, "n_lines": 7, "leaders": "Línea 1, Línea 5", "node_labels": ["2025", "Línea 1", "Línea 5", "Línea 2", "Línea 4", "Línea 3", "Línea 6", "Línea 4A", "Adulto", "Estud. media/sup.", "Estud. básica", "Adulto Mayor"], "node_colors": ["#555550", "#C13B3B", "#2E8B57", "#D4863A", "#3A5FA0", "#7A5C2E", "#7B3FA0", "#6A8BC4", "#378ADD", "#1D9E75", "#BA7517", "#D4537E"], "node_customdata": ["", "186.0M (33.9%)", "91.8M (16.8%)", "80.7M (14.7%)", "79.5M (14.5%)", "63.8M (11.6%)", "34.4M (6.3%)", "11.9M (2.2%)", "428.2M (64.8%)", "134.6M (20.4%)", "32.2M (4.9%)", "66.0M (10.0%)"], "sources": [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7], "targets": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11, 8, 9, 10, 11], "values": [186.008, 91.84, 80.668, 79.506, 63.845, 34.383, 11.878, 120.501, 37.883, 9.065, 18.56, 59.496, 18.704, 4.476, 9.164, 52.259, 16.429, 3.931, 8.049, 51.506, 16.192, 3.875, 7.933, 41.36, 13.003, 3.111, 6.37, 22.274, 7.002, 1.676, 3.431, 7.695, 2.419, 0.579, 1.185], "link_colors": ["rgba(193,59,59,0.5)", "rgba(46,139,87,0.5)", "rgba(212,134,58,0.5)", "rgba(58,95,160,0.5)", "rgba(122,92,46,0.5)", "rgba(123,63,160,0.5)", "rgba(106,139,196,0.5)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(193,59,59,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(46,139,87,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(212,134,58,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(58,95,160,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(122,92,46,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(123,63,160,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)", "rgba(106,139,196,0.28)"]}};
+const YEARS = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025];
+
+const LAYOUT = {
+  paper_bgcolor: '#ffffff',
+  plot_bgcolor:  '#ffffff',
+  font: { family: "'Segoe UI', Arial, sans-serif", size: 12, color: '#333333' },
+  margin: { t: 36, b: 8, l: 10, r: 10 },
+  height: 720,
+  annotations: [
+    { x: 0.01, y: 1.07, xref: 'paper', yref: 'paper', text: '<b>AÑO</b>',
+       showarrow: false, font: { size: 10, color: '#666' }, xanchor: 'left' },
+    { x: 0.44, y: 1.07, xref: 'paper', yref: 'paper', text: '<b>LÍNEAS</b>',
+       showarrow: false, font: { size: 10, color: '#666' }, xanchor: 'center' },
+    { x: 0.93, y: 1.07, xref: 'paper', yref: 'paper', text: '<b>TIPO PAGO</b>',
+       showarrow: false, font: { size: 10, color: '#666' }, xanchor: 'center' },
+  ],
+};
+
+function makeSankeyTrace(yr) {
+  const d = DATA[yr];
+  return {
+    type: 'sankey',
+    arrangement: 'snap',
+    node: {
+      label:      d.node_labels,
+      color:      d.node_colors,
+      customdata: d.node_customdata,
+      pad:        28,
+      thickness:  26,
+      line: { color: 'rgba(0,0,0,0.18)', width: 0.5 },
+      hovertemplate: '<b>%{label}</b><br>%{customdata}<extra></extra>',
+    },
+    link: {
+      source: d.sources,
+      target: d.targets,
+      value:  d.values,
+      color:  d.link_colors,
+      hovertemplate: '%{source.label} → %{target.label}<br><b>%{value:.1f} M viajes</b><extra></extra>',
+    },
+  };
+}
+
+// Render inicial
+Plotly.newPlot('sankey-plot', [makeSankeyTrace(2025)], LAYOUT, {
+  displayModeBar: true, displaylogo: false, toImageButtonOptions: { format: 'png', filename: 'sankey_metro_santiago', width: 1200, height: 1000, scale: 2 },
+  responsive: true,
+});
+
+function updateStats(yr) {
+  const d = DATA[yr];
+  document.getElementById('stat-total').textContent   = d.total.toFixed(1) + 'M';
+  document.getElementById('stat-lines').textContent   = d.n_lines;
+  document.getElementById('stat-leaders').textContent = d.leaders;
+  document.getElementById('yr-badge').textContent     = yr;
+  document.getElementById('yr-slider').value          = yr;
+}
+
+updateStats(2025);
+
+let currentYear = 2025;
+
+function goToYear(yr) {
+  yr = parseInt(yr);
+  if (yr === currentYear) return;
+  currentYear = yr;
+  updateStats(yr);
+  Plotly.react('sankey-plot', [makeSankeyTrace(yr)], LAYOUT, {
+    displayModeBar: true, displaylogo: false, toImageButtonOptions: { format: 'png', filename: 'sankey_metro_santiago', width: 1200, height: 1000, scale: 2 }, responsive: true,
+  });
+}
+
+// ── Slider: solo cambia al soltar (mouseup / touchend) ────────────────────────
+const slider = document.getElementById('yr-slider');
+let isDragging = false;
+
+slider.addEventListener('mousedown',  () => { isDragging = true; });
+slider.addEventListener('touchstart', () => { isDragging = true; }, { passive: true });
+
+// Actualiza solo el badge mientras se arrastra
+slider.addEventListener('input', () => {
+  document.getElementById('yr-badge').textContent = slider.value;
+});
+
+window.addEventListener('mouseup', () => {
+  if (!isDragging) return;
+  isDragging = false;
+  goToYear(slider.value);
+});
+window.addEventListener('touchend', () => {
+  if (!isDragging) return;
+  isDragging = false;
+  goToYear(slider.value);
+});
+
+// ── Animación ─────────────────────────────────────────────────────────────────
+let animTimer = null;
+
+function stopAnim() {
+  clearInterval(animTimer);
+  animTimer = null;
+  document.getElementById('btn-play').innerHTML = '&#9654; Animar';
+}
+
+function startAnim() {
+  document.getElementById('btn-play').innerHTML = '&#9646;&#9646; Pausar';
+  animTimer = setInterval(() => {
+    let next = currentYear + 1;
+    if (next > 2025) next = 2010;
+    goToYear(next);
+  }, 1600);
+}
+
+document.getElementById('btn-play').addEventListener('click', () => {
+  if (animTimer) stopAnim();
+  else startAnim();
+});
+</script>
+</body>
+</html>
